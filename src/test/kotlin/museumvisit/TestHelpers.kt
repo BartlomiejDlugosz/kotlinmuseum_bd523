@@ -1,6 +1,6 @@
 package museumvisit
 
-/*
+
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
@@ -154,4 +154,3 @@ fun checkPatientOutput(person: String, output: String, museumUnderTest: MuseumUn
     }
     fail("Expected to see $person leaving the museum.")
 }
-*/
