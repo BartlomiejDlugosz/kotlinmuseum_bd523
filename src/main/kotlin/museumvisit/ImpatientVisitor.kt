@@ -3,12 +3,7 @@ package museumvisit
 import java.io.PrintStream
 import kotlin.random.Random
 
-fun randomNumberBetween(
-    a: Int,
-    b: Int,
-): Int = Random.nextInt(a, b)
-
-class ImpatientVisitor(val name: String, val ptStream: PrintStream, val museum: Museum) : Runnable {
+class ImpatientVisitor(val name: String, private val ptStream: PrintStream, val museum: Museum) : Runnable {
     private var currentRoom: MuseumSite = museum.outside
         set(v) {
             if (v !is MuseumOutside) {
@@ -32,13 +27,15 @@ class ImpatientVisitor(val name: String, val ptStream: PrintStream, val museum: 
             Thread.sleep(randomNumberBetween(1, 200).toLong())
             ptStream.println("$name wants to leave $currentRoom.")
 
-            var nextRoom = museum[currentRoom as MuseumRoom]!![randomNumberBetween(0, museum[currentRoom as MuseumRoom]!!.size)]
+            val possibleRooms = museum[currentRoom as MuseumRoom]
+            var nextRoom = possibleRooms[randomNumberBetween(0, possibleRooms.size)]
+
             var success = museum.passThroughTurnstile(currentRoom, nextRoom)
             while (success == null) {
                 ptStream.println("$name failed to leave $currentRoom but will try again soon.")
                 Thread.sleep(10)
                 ptStream.println("$name is ready to try leaving $currentRoom again.")
-                nextRoom = museum[currentRoom as MuseumRoom]!![randomNumberBetween(0, museum[currentRoom as MuseumRoom]!!.size)]
+                nextRoom = museum.getNextRandomRoom(currentRoom)
                 success = museum.passThroughTurnstile(currentRoom, nextRoom)
             }
             ptStream.println("$name has left $currentRoom.")

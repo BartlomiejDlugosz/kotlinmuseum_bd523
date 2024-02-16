@@ -1,17 +1,10 @@
 package museumvisit
 
-import java.util.*
+import java.util.LinkedList
+import java.util.Queue
 import kotlin.collections.HashMap
 import kotlin.collections.HashSet
 import kotlin.concurrent.withLock
-
-class UnreachableRoomsException(private val rooms: List<MuseumRoom>) : Exception() {
-    override fun toString(): String = "Unreachable rooms: ${rooms.sortedBy { it.name }.joinToString(", ")}"
-}
-
-class CannotExitMuseumException(private val rooms: List<MuseumRoom>) : Exception() {
-    override fun toString(): String = "Impossible to leave museum from: ${rooms.sortedBy { it.name }.joinToString(", ") }}"
-}
 
 class Museum(val name: String, private val entrance: MuseumRoom) {
     var admitted: Int = 0
@@ -19,12 +12,14 @@ class Museum(val name: String, private val entrance: MuseumRoom) {
     val outside = MuseumOutside()
     private val rooms: HashMap<MuseumSite, MutableList<MuseumSite>> = hashMapOf(entrance to mutableListOf(), outside to mutableListOf())
 
+
     fun entranceHasCapacity() = entrance.hasCapacity()
 
-    fun enter() {
+    fun enter(): MuseumRoom {
         if (!entranceHasCapacity()) throw UnsupportedOperationException()
         admitted++
         entrance.enter()
+        return entrance
     }
 
     fun addRoom(room: MuseumRoom) {
@@ -80,6 +75,18 @@ class Museum(val name: String, private val entrance: MuseumRoom) {
         return null
     }
 
+    fun enterByWaiting(): MuseumRoom? {
+        entrance.lock.withLock {
+            var numOfTries = 0
+            while (!entranceHasCapacity()) {
+                if (numOfTries < MAXRETRIES) return null
+                entrance.condition.await(TIMEOUT, TIMEUNIT)
+                numOfTries++
+            }
+            return enter()
+        }
+    }
+
     fun passThroughTurnstile(
         from: MuseumSite,
         to: MuseumSite,
@@ -94,6 +101,25 @@ class Museum(val name: String, private val entrance: MuseumRoom) {
             }
         }
         return null
+    }
+
+    fun passThroughTurnstileByWaiting(
+        from: MuseumSite,
+        to: MuseumSite,
+    ): MuseumSite? {
+        from.lock.withLock {
+            to.lock.withLock {
+                var numOfTries = 0
+                while (!to.hasCapacity()) {
+                    if (numOfTries < MAXRETRIES) return null
+                    to.condition.await(TIMEOUT, TIMEUNIT)
+                    numOfTries++
+                }
+                from.exit()
+                to.enter()
+                return to
+            }
+        }
     }
 
     override fun toString(): String {
@@ -113,5 +139,10 @@ class Museum(val name: String, private val entrance: MuseumRoom) {
         return str.toString()
     }
 
-    operator fun get(room: MuseumRoom) = rooms[room]
+    fun getNextRandomRoom(room: MuseumSite): MuseumSite {
+        val possibleRooms = this[room]
+        return possibleRooms[rnd.nextInt(possibleRooms.size)]
+    }
+
+    operator fun get(room: MuseumSite) = rooms[room] ?: throw UnsupportedOperationException()
 }

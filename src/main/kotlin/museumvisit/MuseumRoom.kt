@@ -1,10 +1,12 @@
 package museumvisit
 
+import java.util.concurrent.locks.Condition
 import java.util.concurrent.locks.Lock
 import java.util.concurrent.locks.ReentrantLock
 
-class MuseumRoom(val name: String, private val capacity: Int) : MuseumSite {
+class MuseumRoom(override val name: String, private val capacity: Int) : MuseumSite {
     override val lock: Lock = ReentrantLock()
+    override val condition: Condition = lock.newCondition()
 
     var occupancy: Int = 0
         private set
@@ -26,6 +28,7 @@ class MuseumRoom(val name: String, private val capacity: Int) : MuseumSite {
     override fun exit() {
         if (occupancy > 0) {
             occupancy--
+            condition.signal()
         } else {
             throw UnsupportedOperationException()
         }
