@@ -19,5 +19,5 @@ class UnreachableRoomsException(private val rooms: List<MuseumRoom>) : Exception
 }
 
 class CannotExitMuseumException(private val rooms: List<MuseumRoom>) : Exception() {
-    override fun toString(): String = "Impossible to leave museum from: ${rooms.sortedBy { it.name }.joinToString(", ") }}"
+    override fun toString(): String = "Impossible to leave museum from: ${rooms.sortedBy { it.name }.joinToString(", ") }"
 }

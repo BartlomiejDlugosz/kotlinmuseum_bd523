@@ -28,7 +28,6 @@ class MuseumRoom(override val name: String, private val capacity: Int) : MuseumS
     override fun exit() {
         if (occupancy > 0) {
             occupancy--
-            condition.signal()
         } else {
             throw UnsupportedOperationException()
         }

@@ -94,6 +94,7 @@ class Museum(val name: String, private val entrance: MuseumRoom) {
             to.lock.withLock {
                 if (to.hasCapacity()) {
                     from.exit()
+                    from.condition.signal()
                     to.enter()
                     return to
                 }
@@ -115,6 +116,7 @@ class Museum(val name: String, private val entrance: MuseumRoom) {
                     numOfTries++
                 }
                 from.exit()
+                from.condition.signal()
                 to.enter()
                 return to
             }
