@@ -12,7 +12,6 @@ class Museum(val name: String, private val entrance: MuseumRoom) {
     val outside = MuseumOutside()
     private val rooms: HashMap<MuseumSite, MutableList<MuseumSite>> = hashMapOf(entrance to mutableListOf(), outside to mutableListOf())
 
-
     fun entranceHasCapacity() = entrance.hasCapacity()
 
     fun enter(): MuseumRoom {

@@ -1,7 +1,6 @@
 package museumvisit
 
 import java.io.PrintStream
-import kotlin.random.Random
 
 class ImpatientVisitor(val name: String, private val ptStream: PrintStream, val museum: Museum) : Runnable {
     private var currentRoom: MuseumSite = museum.outside

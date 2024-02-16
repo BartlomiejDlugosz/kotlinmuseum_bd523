@@ -15,7 +15,7 @@ fun main() {
             println("From here, you can go to:")
             println("\t${selectedMuseum[currentRoom].joinToString(", ")}")
             input = readlnOrNull() ?: break
-            if (selectedMuseum[currentRoom].any{ it.name == input}) {
+            if (selectedMuseum[currentRoom].any { it.name == input }) {
                 val newRoom = selectedMuseum[currentRoom].first { it.name == input }
                 selectedMuseum.passThroughTurnstile(currentRoom, newRoom)
                 currentRoom = newRoom
@@ -23,7 +23,6 @@ fun main() {
                     println("We hope you had a good time in the ${selectedMuseum.name} museum - goodbye!!")
                     break
                 }
-
             } else {
                 println("I’m sorry, but that’s not one of the next places you can go. Let’s try again.")
             }
