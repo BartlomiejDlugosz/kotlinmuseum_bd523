@@ -1,6 +1,5 @@
 package museumvisit
 
-
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 import kotlin.test.fail
@@ -10,7 +9,7 @@ class MuseumUnderTest(val museum: Museum, val entrance: MuseumRoom, val rooms: L
 fun createSmallMuseumUnderTest(): MuseumUnderTest {
     val entrance = MuseumRoom("Entrance", 1)
     val exhibition1 = MuseumRoom("Room 1", 1)
-    val exhibition2 = MuseumRoom("Room 1", 1)
+    val exhibition2 = MuseumRoom("Room 2", 1)
 
     val rooms = listOf(entrance, exhibition1, exhibition2)
 
@@ -61,34 +60,39 @@ fun createAquariumMuseumUnderTest(): MuseumUnderTest {
     return MuseumUnderTest(museum, entrance, rooms)
 }
 
-val lotsOfPeople = listOf(
-    "Neha",
-    "Alex",
-    "Yi",
-    "Jianyi",
-    "Felix",
-    "Oscar",
-    "Amelia",
-    "Noah",
-    "Prakesh",
-    "Satnam",
-    "Susan",
-    "Poppy",
-    "Jaya",
-    "Indy",
-    "Lula",
-    "Maximilian",
-    "Minimilian",
-    "Jacub",
-    "Donald",
-    "Liz",
-    "Teresa",
-    "Julia",
-    "Parminda",
-    "Xi",
-)
+val lotsOfPeople =
+    listOf(
+        "Neha",
+        "Alex",
+        "Yi",
+        "Jianyi",
+        "Felix",
+        "Oscar",
+        "Amelia",
+        "Noah",
+        "Prakesh",
+        "Satnam",
+        "Susan",
+        "Poppy",
+        "Jaya",
+        "Indy",
+        "Lula",
+        "Maximilian",
+        "Minimilian",
+        "Jacub",
+        "Donald",
+        "Liz",
+        "Teresa",
+        "Julia",
+        "Parminda",
+        "Xi",
+    )
 
-fun checkImpatientOutput(person: String, output: String, museumUnderTest: MuseumUnderTest) {
+fun checkImpatientOutput(
+    person: String,
+    output: String,
+    museumUnderTest: MuseumUnderTest,
+) {
     val lines = output.split("\n")
     var index = 0
     while (lines[index] != "$person has entered ${museumUnderTest.museum.name}.") {
@@ -127,7 +131,11 @@ fun checkImpatientOutput(person: String, output: String, museumUnderTest: Museum
     fail("Expected to see $person leaving the museum.")
 }
 
-fun checkPatientOutput(person: String, output: String, museumUnderTest: MuseumUnderTest) {
+fun checkPatientOutput(
+    person: String,
+    output: String,
+    museumUnderTest: MuseumUnderTest,
+) {
     val lines = output.split("\n")
     var index = 0
     assertEquals("$person has entered ${museumUnderTest.museum.name}.", lines[index])

@@ -7,7 +7,6 @@ import kotlin.test.assertTrue
 import kotlin.test.fail
 
 class MuseumRoomTest {
-
     @Test
     fun `test name`() {
         assertEquals("Dali paintings", MuseumRoom("Dali paintings", 10).name)
@@ -58,6 +57,4 @@ class MuseumRoomTest {
             // Good: exception expected
         }
     }
-
-
 }

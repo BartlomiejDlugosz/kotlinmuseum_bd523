@@ -5,7 +5,6 @@ import kotlin.test.assertEquals
 import kotlin.test.fail
 
 class MuseumTest {
-
     @Test
     fun `test toString animal sanctuary`() {
         assertEquals(
@@ -136,5 +135,4 @@ class MuseumTest {
             // Good: exception expected
         }
     }
-
 }

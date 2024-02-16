@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="museumvisit.ImpatientVisitorsTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2024-02-15T17:55:28" hostname="dyn3192-143.wlan.ic.ac.uk" time="8.983">
+  <properties/>
+  <testcase name="many visitors to aquarium" classname="museumvisit.ImpatientVisitorsTest" time="1.444"/>
+  <testcase name="many visitors to small museum" classname="museumvisit.ImpatientVisitorsTest" time="4.881"/>
+  <testcase name="two visitors to small museum" classname="museumvisit.ImpatientVisitorsTest" time="0.723"/>
+  <testcase name="two visitors to aquarium" classname="museumvisit.ImpatientVisitorsTest" time="1.933"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
